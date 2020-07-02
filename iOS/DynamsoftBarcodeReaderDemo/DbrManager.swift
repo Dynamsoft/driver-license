@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class  DbrManager: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate,DBRServerLicenseVerificationDelegate {
+class  DbrManager: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     var barcodeFormat:Int?
     var barcodeFormat2:Int?
@@ -24,20 +24,10 @@ class  DbrManager: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate,DBRSer
     var settings:iPublicRuntimeSettings?
     var m_recognitionCallback:Selector?
     var m_recognitionReceiver:ViewController?
-    var m_verificationCallback:Selector?
-    var m_verificationReceiver:ViewController?
     
-    var ciContext:CIContext?
     var inputDevice:AVCaptureDevice?
     var itrFocusFinish:Int!
     var firstFocusFinish:Bool!
-    init(serverURL:String,licenseKey:String) {
-        super.init()
-        barcodeReader = DynamsoftBarcodeReader(licenseFromServer: serverURL, licenseKey: licenseKey, verificationDelegate: self)
-        
-        self.parametersInit()
-    }
-    
     init(license:String)
     {
         super.init()
@@ -69,13 +59,6 @@ class  DbrManager: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate,DBRSer
         inputDevice = nil
         m_recognitionReceiver = nil
         m_recognitionCallback = nil
-        m_verificationReceiver = nil
-        m_verificationCallback = nil
-    }
-    
-    func connectServerAfterInit(serverURL:String,licenseKey:String)
-    {
-        barcodeReader = DynamsoftBarcodeReader(licenseFromServer: serverURL, licenseKey: licenseKey, verificationDelegate: self)
     }
     
     func parametersInit()
@@ -86,7 +69,6 @@ class  DbrManager: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate,DBRSer
         barcodeFormat = Int(EnumBarcodeFormat.ONED.rawValue) | Int(EnumBarcodeFormat.PDF417.rawValue) | Int(EnumBarcodeFormat.QRCODE.rawValue) | Int(EnumBarcodeFormat.DATAMATRIX.rawValue)
         barcodeFormat2 = 0
         startRecognitionDate = nil
-        ciContext = CIContext()
         m_recognitionReceiver = nil
         startVidioStreamDate  = NSDate()
         adjustingFocus = true
@@ -231,34 +213,9 @@ class  DbrManager: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate,DBRSer
         }
     }
     
-    func uiImageFromSamplebuffer(_ imageBuffer: CVImageBuffer) -> UIImage? {
-        if #available(iOS 9.0, *) {
-            let ciImage = CIImage(cvImageBuffer: imageBuffer)
-            let cgImage = ciContext?.createCGImage(ciImage, from: ciImage.extent)
-            return UIImage(cgImage: cgImage!, scale: 1.0, orientation: .right)
-        } else {
-            // Fallback on earlier versions
-            return nil
-        }
-    }
-    
     func setRecognitionCallback(sender:ViewController, callBack:Selector)
     {
         m_recognitionReceiver = sender
         m_recognitionCallback = callBack
-    }
-    
-    func setServerLicenseVerificationCallback(sender:ViewController, callBack:Selector)
-    {
-        m_verificationReceiver = sender
-        m_verificationCallback = callBack
-    }
-    
-    func licenseVerificationCallback(_ isSuccess: Bool, error: Error?)
-    {
-        let boolNumber = NSNumber(value: isSuccess)
-        DispatchQueue.main.async{
-            self.m_verificationReceiver?.perform(self.m_verificationCallback!, with: boolNumber, with: error)
-        }
     }
 }
