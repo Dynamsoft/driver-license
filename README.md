@@ -27,4 +27,29 @@ Get a [free trial license](https://www.dynamsoft.com/CustomerPortal/Portal/Trial
 
 ## iOS Barcode Reader
 
-// TODO
+1. Add the barcode SDK to your Podfile:
+
+    ```
+    target 'DynamsoftBarcodeReaderDemo' do
+      # Comment the next line if you don't want to use dynamic frameworks
+      use_frameworks!
+
+       #pod 'DynamsoftBarcodeReader'
+
+    end
+    ```
+
+2. Run the command `pod install` to download the framework.
+3. Add the following lines to the `Pods/Target Support Files/Pods-testOc/Pods-xxx.debug.xcconfig` file:
+
+    ```
+    FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/Pods/DynamsoftBarcodeReader"
+    HEADER_SEARCH_PATHS = "${SRCROOT}/Pods/DynamsoftBarcodeReader/DynamsoftBarcodeReader.framework/Headers"
+    ```
+4. Import the project to Xcode.
+5. Update the license key:
+    
+    ```swift
+    let kLicense = "Put your license here"
+    ```
+6. Build and run the app.
