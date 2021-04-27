@@ -1,6 +1,10 @@
 # US Driver's License Recognition
 The samples demonstrate how to decode PDF417 bar code symbology and extract US driver's license information using Dynamsoft mobile barcode SDKs.
 
+## What You Should Know
+- [![](https://img.shields.io/badge/Download-Offline%20SDK-orange)](https://www.dynamsoft.com/barcode-reader/downloads)
+- [![](https://img.shields.io/badge/Get-30--day%20FREE%20Trial%20License-blue)](https://www.dynamsoft.com/customer/license/trialLicense/?product=dbr)
+
 ## Free Trial License
 Get a [free trial license](https://www.dynamsoft.com/CustomerPortal/Portal/Triallicense.aspx) from Dynamsoft online portal.
 
